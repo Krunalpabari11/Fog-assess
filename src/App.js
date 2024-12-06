@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React, { useState } from "react";
 import { Howl } from "howler";
 import Sidebar from "./components/sidebar";
 import Navbar from "./components/navbar";
@@ -17,7 +17,6 @@ const App = () => {
   const [playlist, setPlaylist] = useState(songs);
   const [currentSong, setCurrentSong] = useState(null);
 
-
   const onDragEnd = (result) => {
     if (!result.destination) return;
     const reordered = Array.from(playlist);
@@ -28,30 +27,35 @@ const App = () => {
 
   return (
     <div 
-      className="flex flex-col lg:flex-row min-h-screen bg-gradient-to-b from-[#4C0000] to-[#0A0A0A] text-white font-poppins overflow-y-hidden justify-center " 
-      style={{overflowY: 'hidden',maxHeight: '100vh'}}
+      className="flex flex-col lg:flex-row min-h-screen bg-gradient-to-b from-[#4C0000] to-[#0A0A0A] text-white font-poppins justify-center" 
+    style={{overflowY:'hidden',maxHeight:'100vh'}}
     >
-      <div className="w-full lg:w-1/4 bg-black lg:w-1/5 "   >
+      {/* Sidebar */}
+      <div className="w-full lg:w-1/4 bg-black lg:w-1/5 ">
         <Sidebar />
       </div>
       
-      <div className="flex-1  ">
-        <div className=" jusitfy-center items-center">
+      {/* Main Content */}
+      <div className="flex-1 flex flex-col items-center ">
+        {/* Navbar */}
+        <div className="w-full pl-4">
           <Navbar />
         </div>
         
-        <div className="mt-4  ml-16">
-          <img src="wallpaper.png" alt="Wallpaper" />
+        {/* Wallpaper Image */}
+        <div className="mt-2 w-full pl-12 pr-12">
+          <img src="wallpaper.png" alt="Wallpaper" className="w-full h-auto object-cover rounded-md" />
         </div>
         
-        <div className="mt-4 pl-12 pr-12">
+        {/* Drag Component */}
+        <div className="mt-2 w-full max-w-6xl">
           <DragComponent />
         </div>
-        
       </div>
       
-      <div className="w-full lg:w-1/5 p bg-gradient-to-b from-[#00000000] to-[#0F0F0F99]">
-      <SongCard></SongCard>
+      {/* Song Card */}
+      <div className="w-full lg:w-1/5  bg-gradient-to-b from-[#00000000] to-[#0F0F0F99]">
+        <SongCard />
       </div>
     </div>
   );

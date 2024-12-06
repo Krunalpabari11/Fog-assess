@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { DragDropContext, Droppable, Draggable } from '@hello-pangea/dnd';
 import { useContext } from 'react';
 import { PlayListContext } from '../context/playListContext';
+
 export default function DragComponent() {
   const songs = [
     { id: "1", img: '/song1.png', title: "Billie Jean", album: "Thriller 25 Super", duration: "4:53", playing: '1,040,811,084' },
@@ -11,10 +12,7 @@ export default function DragComponent() {
   ];
 
   const [playlist, setPlaylist] = useState(songs);
-
-  let {currentSong,setCurrentSong,currentIndex,setCurrentIndex}=useContext(PlayListContext);
- 
-
+  let {currentSong, setCurrentSong, currentIndex, setCurrentIndex} = useContext(PlayListContext);
 
   const onDragEnd = (result) => {
     if (!result.destination) return;
@@ -26,11 +24,10 @@ export default function DragComponent() {
     setPlaylist(reorderedPlaylist);
   };
 
-  const songHandler=(song)=>{
-
-    setCurrentSong(song)
-    setCurrentIndex(song.id-1)
-  }
+  const songHandler = (song) => {
+    setCurrentSong(song);
+    setCurrentIndex(song.id - 1);
+  };
 
   return (
     <div className="pr-8 pl-6">
@@ -45,19 +42,19 @@ export default function DragComponent() {
             <table
               {...provided.droppableProps}
               ref={provided.innerRef}
-              className="table-auto w-full  "
+              className="table-auto w-full"
             >
               <thead>
-                <tr className="text-left font-semibold sticky top-0 ">
+                <tr className="text-left font-semibold sticky top-0  text-white">
                   <th className="py-2 px-4">#</th>
-                  <th className="py-2 px-4"></th>
+                  <th className="py-2 px-4">Image</th>
                   <th className="py-2 px-4">Title</th>
                   <th className="py-2 px-4">Playing</th>
                   <th className="py-2 px-4">Time</th>
-                  <th className="py-2 px-4 " style={{float:'right'}}>Album</th>
+                  <th className="py-2 px-4">Album</th>
                 </tr>
               </thead>
-              <tbody className="">
+              <tbody>
                 {playlist.map((song, index) => (
                   <Draggable key={song.id} draggableId={song.id} index={index}>
                     {(provided, snapshot) => (
@@ -65,34 +62,28 @@ export default function DragComponent() {
                         ref={provided.innerRef}
                         {...provided.draggableProps}
                         {...provided.dragHandleProps}
-                        onClick={()=>songHandler(song)}
+                        onClick={() => songHandler(song)}
                         className={`
                           hover:border-l-4 border-[#CA0000]
                           transition-colors 
-
                           ${currentSong?.id === song.id ? 'bg-[#520000] border-l-4 border-[#CA0000]' : ''}
-                          
-                          ${snapshot.isDragging ? 'bg-[#520000] shadow-lg' : 'hover:bg-[#520000]'}`}
+                          ${snapshot.isDragging ? 'bg-[#520000] shadow-lg' : 'hover:bg-[#520000]'}
+                        `}
                       >
-                       <td className="py-2 px-4">
-  {currentSong?.id === song.id ? (
-    <img src="/music.png" className="w-5 h-5" alt="Playing Icon" />
-  ) : (
-    index + 1
-  )}
-</td>
-
                         <td className="py-2 px-4">
-                          <img
-                            src={song.img}
-                            alt={song.title}
-                            className="w-10 h-10 rounded"
-                          />
+                          {currentSong?.id === song.id ? (
+                            <img src="/music.png" className="w-5 h-5" alt="Playing Icon" />
+                          ) : (
+                            index + 1
+                          )}
+                        </td>
+                        <td className="py-2 px-4">
+                          <img src={song.img} alt={song.title} className="w-10 h-10 rounded" />
                         </td>
                         <td className="py-2 px-4">{song.title}</td>
                         <td className="py-2 px-4">{song.playing}</td>
                         <td className="py-2 px-4">{song.duration}</td>
-                        <td className="py-2 px-4 " style={{float:'right'}}>{song.album}</td>
+                        <td className="py-2 px-4">{song.album}</td>
                       </tr>
                     )}
                   </Draggable>
