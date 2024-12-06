@@ -1,3 +1,74 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+
+Style for SVG buttons
+.svg-button {
+    background: none;
+    border: none;
+    padding: 10px;
+    cursor: pointer;
+    transition: transform 0.3s ease;
+}
+
+.svg-button:hover {
+    transform: scale(1.1);
+}
+
+.svg-button svg {
+    width: 24px;
+    height: 24px;
+    stroke: #fff;
+}
+
+/* Style for the timeline slider */
+.timeline-slider {
+    width: 100%;
+    appearance: none;
+    height: 4px;
+    background: #ffffff;
+    border-radius: 5px;
+    outline: none;
+    transition: background 0.3s ease;
+}
+
+.timeline-slider::-webkit-slider-thumb {
+    appearance: none;
+    width: 16px;
+    height: 16px;
+    background: #fff;
+    border-radius: 50%;
+    cursor: pointer;
+}
+
+.timeline-slider:active {
+    background: #666;
+}
+
+
+.song-card-wrapper {
+    display: flex;
+    flex-direction: column;
+    height: 100vh; /* Full height of the screen */
+    width: 100%; /* Full width of the screen */
+    padding: 20px; /* Optional padding */
+    position: relative; /* Keeps it inside the parent container */
+}
+
+.song-card {
+    margin-top: auto; /* Pushes the card to the bottom */
+    max-width: 350px;
+    width: 90%; /* Makes it responsive */
+    align-self: flex-end; /* Aligns the card to the bottom-right */
+}
+
+/* Media Query for smaller screens */
+@media (max-width: 768px) {
+    .song-card {
+        align-self: center; /* Center the card on smaller screens */
+    }
+}
+
+@media (max-width: 480px) {
+    .song-card img {
+        width: 100%; /* Ensure image scales properly */
+        height: auto;
+    }
+}

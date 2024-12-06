@@ -3,9 +3,9 @@ export default function Sidebar() {
     <div className=" flex-col flex  h-full pl-12">
       <div className="flex items-center gap-4 mt-8 ">
         <img src="/Group.png" alt="Logo" style={{ height: "3rem" }} />
-        <div className="text-2xl">
+        <div className="text-2xl font-bold">
           <span style={{ color: "red" }}>Dream</span>
-          <span className="text-white ml-1">Music</span>
+          <span className="text-white " >Music</span>
         </div>
       </div>
       <div className="text-white flex flex-col items-start gap-4 mt-20 flex-grow">
