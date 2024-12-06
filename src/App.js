@@ -38,7 +38,7 @@ const App = () => {
       {/* Main Content */}
       <div className="flex-1 flex flex-col items-center ">
         {/* Navbar */}
-        <div className="w-full pl-4">
+        <div className="w-full pl-4 pr-4">
           <Navbar />
         </div>
         

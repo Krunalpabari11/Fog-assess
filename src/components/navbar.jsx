@@ -1,7 +1,7 @@
 export default function Navbar() {
   return (
     <>
-      <div className="pl-8 pt-6 md:flex w-full">
+      <div className="pl-8 pt-6 md:flex w-full pr-8">
         <nav className="w-full">
           <ul className="flex flex-col sm:flex-row gap-6 sm:gap-20 items-center sm:items-center">
             <li className="text-white">Music</li>
