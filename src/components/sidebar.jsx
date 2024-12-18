@@ -1,10 +1,20 @@
+import React, { useState } from 'react';
+import { Menu } from 'lucide-react';
+
 export default function Sidebar() {
-  return (
-    <div className="flex flex-col h-full pl-6 sm:pl-12 bg-[#111]">
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+
+  const toggleMobileMenu = () => {
+    setIsMobileMenuOpen(!isMobileMenuOpen);
+  };
+
+  const SidebarContent = () => (
+    <>
       {/* Logo Section */}
-      <div className="flex items-center gap-4 mt-8 ">
-        <img src="/Group.png" alt="Logo" className="h-12 sm:h-16" />
-        <div className="text-2xl font-bold">
+      
+      <div className="flex items-center gap-4  mt-8">
+        <img src="/Group.png" alt="Logo" className="h-12 sm:h-12" />
+        <div className="text-xl font-bold">
           <span style={{ color: "red" }}>Dream</span>
           <span className="text-white">Music</span>
         </div>
@@ -49,6 +59,38 @@ export default function Sidebar() {
           <span>Log Out</span>
         </div>
       </div>
-    </div>
+    </>
+  );
+
+  return (
+    <>
+      {/* Three-dot menu for mobile/tablet */}
+      <button 
+        onClick={toggleMobileMenu} 
+        className="lg:hidden fixed top-4 left-4 z-50 p-2 bg-[#111] text-white rounded"
+      >
+        <Menu />
+      </button>
+
+      {/* Desktop Sidebar - Always visible on larger screens */}
+      <div className="hidden lg:flex flex-col h-full pl-6 sm:pl-12 bg-[#111] w-64">
+        <SidebarContent />
+      </div>
+
+      {/* Mobile Sidebar - Overlay for smaller screens */}
+      {isMobileMenuOpen && (
+        <div 
+          className="fixed inset-0 bg-black/50 z-40 md:hidden"
+          onClick={toggleMobileMenu}
+        >
+          <div 
+            className="flex flex-col h-full pl-6 sm:pl-12 bg-[#111] w-64 shadow-xl"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <SidebarContent />
+          </div>
+        </div>
+      )}
+    </>
   );
 }
