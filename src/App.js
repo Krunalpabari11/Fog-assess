@@ -26,38 +26,49 @@ const App = () => {
   };
 
   return (
-    <div 
-      className="flex flex-col lg:flex-row min-h-screen bg-gradient-to-b from-[#4C0000] to-[#0A0A0A] text-white font-poppins"
-    >
-      {/* Sidebar */}
-      <div className=" lg:w-1/5">
+    <div className="flex h-screen bg-gradient-to-b from-[#4C0000] to-[#0A0A0A] text-white font-poppins overflow-hidden">
+      
+      <div className=" lg:block lg:w-1/5 w-1/10 h-screen">
         <Sidebar />
       </div>
 
-      {/* Main Content */}
-      <div className="flex-1 flex flex-col items-center overflow-y-auto">
-        {/* Navbar */}
+      
+      <div className="flex-1 flex flex-col h-screen">
+        {/* Fixed Navbar */}
         <div className="w-full px-4 py-2">
           <Navbar />
         </div>
 
-        {/* Wallpaper Image */}
-        <div className="mt-2 w-full px-4 container mx-auto">
-          <img 
-            src="wallpaper.png" 
-            alt="Wallpaper" 
-            className="w-full h-auto object-cover rounded-md"
-          />
-        </div>
+        {/* Scrollable Content */}
+        <div className="flex-1 overflow-y-auto " style={{scrollbarWidth:'none'}} >
+          {/* Container for scrollable content */}
+          <div className="px-4 space-y-4">
+            {/* Wallpaper Image */}
+            <div className="container mx-auto">
+              <img
+                src="wallpaper.png"
+                alt="Wallpaper"
+                className="w-full h-auto object-cover rounded-md"
+              />
+            </div>
 
-        {/* Drag Component */}
-        <div className="mt-2 w-full px-4 max-w-6xl">
-          <DragComponent />
+            {/* Drag Component */}
+            <div className="max-w-6xl mx-auto pb-20 lg:pb-0">
+              <DragComponent />
+            </div>
+          </div>
         </div>
       </div>
 
-      {/* Song Card */}
-      <div className="w-full lg:w-1/5 bg-gradient-to-b from-[#00000000] to-[#0F0F0F99]">
+      {/* Song Card - Fixed */}
+      <div className="hidden lg:block w-1/5 h-screen">
+        <div className="h-full bg-gradient-to-b from-[#00000000] to-[#0F0F0F99]">
+          <SongCard />
+        </div>
+      </div>
+
+      {/* Mobile Song Card */}
+      <div className="lg:hidden fixed bottom-0 left-0 right-0">
         <SongCard />
       </div>
     </div>

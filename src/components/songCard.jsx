@@ -93,104 +93,113 @@ export default function SongCard() {
 
     return (
         <>
-            {/* Large Screens - Vertical Layout */}
-            <div className="hidden lg:block song-card-wrapper fixed right-0 top-0 bottom-0 w-1/5 bg-gradient-to-b from-[#00000000] to-[#0F0F0F99] overflow-y-auto">
-                {currentSong ? (
-                    <div className="song-card flex flex-col justify-center items-center mt-auto p-4">
-                        <div className="rounded-lg bg-[#6B0000] pt-12 pb-12 w-full p-8 justify-center items-center">
-                            <div className="flex justify-center items-center">
-                                Now Playing
-                            </div>
-                            <div className="flex justify-center items-center mt-4">
-                                <img
-                                    src="./songimage.png"
-                                    alt={currentSong.title}
-                                    className="rounded-t-lg w-[239px] h-[139px] flex justify-center items-center"
-                                />
-                            </div>
-                            <h4 className="font-bold text-lg flex justify-center items-center">
-                                {currentSong.title}
-                            </h4>
-                            <p className="text-sm text-gray-400 flex justify-center items-center">
-                                {currentSong.album}
-                            </p>
-
-                            {/* Timeline */}
-                            <div className="flex justify-center items-center">
-                                <div className="flex justify-center items-center mt-4 w-3/4 gap-6">
-                                    <span className="text-sm text-white">{formatTime(currentTime)}</span>
-                                    <input
-                                        type="range"
-                                        min="0"
-                                        max="100"
-                                        value={(currentTime / duration) * 100}
-                                        onChange={handleSeek}
-                                        className="timeline-slider"
+            {/* Desktop Version */}
+            <div className="hidden lg:block lg:fixed lg:right-0 lg:top-0 lg:bottom-0 lg:w-1/5">
+                <div className="h-full bg-gradient-to-b from-[#00000000] to-[#0F0F0F99]">
+                    {currentSong ? (
+                        <div className="song-card flex flex-col justify-end h-full p-4">
+                            <div className="rounded-lg bg-[#6B0000] pt-12 pb-12 w-full p-8">
+                                <div className="flex justify-center items-center">
+                                    Now Playing
+                                </div>
+                                <div className="flex justify-center items-center mt-4">
+                                    <img
+                                        src="./songimage.png"
+                                        alt={currentSong.title}
+                                        className="rounded-t-lg w-[239px] h-[139px]"
                                     />
-                                    <span className="text-sm text-white">{formatTime(duration)}</span>
+                                </div>
+                                <h4 className="font-bold text-lg text-center mt-4">
+                                    {currentSong.title}
+                                </h4>
+                                <p className="text-sm text-gray-400 text-center">
+                                    {currentSong.album}
+                                </p>
+
+                                {/* Timeline */}
+                                <div className="mt-4">
+                                    <div className="flex items-center justify-center gap-6">
+                                        <span className="text-sm text-white">{formatTime(currentTime)}</span>
+                                        <input
+                                            type="range"
+                                            min="0"
+                                            max="100"
+                                            value={(currentTime / duration) * 100}
+                                            onChange={handleSeek}
+                                            className="timeline-slider flex-grow"
+                                        />
+                                        <span className="text-sm text-white">{formatTime(duration)}</span>
+                                    </div>
+                                </div>
+
+                                {/* Controls */}
+                                <div className="flex justify-center items-center mt-4 gap-6">
+                                    <button onClick={handlePrevious} className="svg-button">
+                                        <img src="/Repeat.png" alt="Repeat" className="w-5 h-5" />
+                                    </button>
+                                    <button onClick={handlePrevious} className="svg-button">
+                                        <img src="/Back.png" alt="Previous" className="w-5 h-5" />
+                                    </button>
+                                    <button onClick={togglePlayPause} className="svg-button">
+                                        <img 
+                                            src={isPlaying ? "/Pause.png" : "/Play.png"} 
+                                            alt={isPlaying ? "Pause" : "Play"} 
+                                            className="w-5 h-5" 
+                                        />
+                                    </button>
+                                    <button onClick={handleNext} className="svg-button">
+                                        <img src="/Next.png" alt="Next" className="w-5 h-5" />
+                                    </button>
+                                    <button onClick={handlePrevious} className="svg-button">
+                                        <img src="/Random.png" alt="Random" className="w-4 h-4" />
+                                    </button>
                                 </div>
                             </div>
-
-                            {/* Controls */}
-                            <div className="flex justify-center items-center mt-4 gap-6">
-                                <button onClick={handlePrevious} className="svg-button" aria-label="Repeat">
-                                    <img src="/Repeat.png" alt="Repeat" className="w-5 h-5" />
-                                </button>
-
-                                <button onClick={handlePrevious} className="svg-button" aria-label="Previous">
-                                    <img src="/Back.png" alt="Previous" className="w-5 h-5" />
-                                </button>
-
-                                <button onClick={togglePlayPause} className="svg-button" aria-label={isPlaying ? "Pause" : "Play"}>
-                                    {isPlaying ? (
-                                        <img src="/Pause.png" alt="Pause" className="w-5 h-5" />
-                                    ) : (
-                                        <img src="/Play.png" alt="Play" className="w-5 h-5" />
-                                    )}
-                                </button>
-
-                                <button onClick={handleNext} className="svg-button" aria-label="Next">
-                                    <img src="/Next.png" alt="Next" className="w-5 h-5" />
-                                </button>
-
-                                <button onClick={handlePrevious} className="svg-button" aria-label="Random">
-                                    <img src="/Random.png" alt="Random" className="w-4 h-4" />
-                                </button>
-                            </div>
                         </div>
-                    </div>
-                ) : (
-                    <p className="text-gray-400 text-center mt-10">Select a song to play</p>
-                )}
+                    ) : (
+                        <div className="h-full flex items-end pb-4">
+                            <p className="text-gray-400 text-center w-full">Select a song to play</p>
+                        </div>
+                    )}
+                </div>
             </div>
 
-            {/* Mobile Screens - Horizontal Layout at Bottom */}
-            <div className="lg:hidden fixed bottom-0 left-0 right-0 bg-[#6B0000] z-50">
+            {/* Mobile Version */}
+            <div className="block lg:hidden fixed bottom-0 left-0 right-0 bg-[#6B0000] z-50">
                 {currentSong ? (
                     <div className="flex items-center p-4 space-x-4">
                         <img
                             src="./songimage.png"
                             alt={currentSong.title}
-                            className="rounded-lg w-16 h-16"
+                            className="rounded-lg w-12 h-12"
                         />
-                        <div className="flex-grow">
-                            <h4 className="font-bold text-sm">{currentSong.title}</h4>
-                            <p className="text-xs text-gray-300">{currentSong.album}</p>
+                        <div className="flex-grow min-w-0">
+                            <h4 className="font-bold text-sm truncate">{currentSong.title}</h4>
+                            <p className="text-xs text-gray-300 truncate">{currentSong.album}</p>
                         </div>
-                        <div className="flex items-center space-x-2">
-                            <button onClick={handlePrevious} className="svg-button" aria-label="Previous">
-                                <img src="/Back.png" alt="Previous" className="w-5 h-5" />
-                            </button>
-                            <button onClick={togglePlayPause} className="svg-button" aria-label={isPlaying ? "Pause" : "Play"}>
-                                {isPlaying ? (
-                                    <img src="/Pause.png" alt="Pause" className="w-5 h-5" />
-                                ) : (
-                                    <img src="/Play.png" alt="Play" className="w-5 h-5" />
-                                )}
-                            </button>
-                            <button onClick={handleNext} className="svg-button" aria-label="Next">
-                                <img src="/Next.png" alt="Next" className="w-5 h-5" />
-                            </button>
+                        <div className="flex items-center space-x-2 flex-shrink-0">
+                        <div className="flex justify-center items-center mt-4 gap-6">
+                                    <button onClick={handlePrevious} className="svg-button">
+                                        <img src="/Repeat.png" alt="Repeat" className="w-5 h-5" />
+                                    </button>
+                                    <button onClick={handlePrevious} className="svg-button">
+                                        <img src="/Back.png" alt="Previous" className="w-5 h-5" />
+                                    </button>
+                                    <button onClick={togglePlayPause} className="svg-button">
+                                        <img 
+                                            src={isPlaying ? "/Pause.png" : "/Play.png"} 
+                                            alt={isPlaying ? "Pause" : "Play"} 
+                                            className="w-5 h-5" 
+                                        />
+                                    </button>
+                                    <button onClick={handleNext} className="svg-button">
+                                        <img src="/Next.png" alt="Next" className="w-5 h-5" />
+                                    </button>
+                                    <button onClick={handlePrevious} className="svg-button">
+                                        <img src="/Random.png" alt="Random" className="w-4 h-4" />
+                                    </button>
+                                </div>
+                                
                         </div>
                     </div>
                 ) : (
