@@ -1,7 +1,7 @@
 import { useContext, useState, useRef, useEffect } from "react";
 import { PlayListContext } from "../context/playListContext";
 import { Howl } from "howler";
-import '../App.css';
+import "../App.css";
 
 export default function SongCard() {
     const { currentSong, currentIndex, setCurrentSong, songsList, setCurrentIndex } = useContext(PlayListContext);
@@ -13,6 +13,7 @@ export default function SongCard() {
 
     useEffect(() => {
         if (currentSong) {
+            // Unload any previously loaded sound
             if (soundRef.current) {
                 soundRef.current.unload();
             }
@@ -22,21 +23,22 @@ export default function SongCard() {
                 html5: true,
                 onplay: () => setIsPlaying(true),
                 onpause: () => setIsPlaying(false),
-                onend: () => {
-                    setIsPlaying(false);
-                    soundRef.current = null;
+                onend: handleNext, // Automatically play the next song
+                onload: () => {
+                    setDuration(sound.duration());
+                    startTimeUpdate(); // Start updating time when the song is loaded
                 },
-                onload: () => setDuration(sound.duration()),
-                onseek: () => setCurrentTime(sound.seek())
+                onseek: () => setCurrentTime(sound.seek()),
             });
 
             soundRef.current = sound;
-            sound.play();
-            startTimeUpdate();
+            sound.play(); // Play the song when loaded
 
         } else {
+            // Reset state when no song is playing
             setCurrentTime(0);
             setDuration(0);
+            setIsPlaying(false);
         }
 
         return () => {
@@ -51,22 +53,29 @@ export default function SongCard() {
         if (!soundRef.current) return;
 
         if (isPlaying) {
-            soundRef.current.pause();
+            soundRef.current.pause(); // Pause playback
         } else {
-            soundRef.current.play();
+            soundRef.current.play(); // Resume playback
         }
+
+        setIsPlaying(!isPlaying); // Toggle the playing state
     };
 
     const handleSeek = (event) => {
         if (!soundRef.current) return;
         const seekTo = (event.target.value / 100) * duration;
         soundRef.current.seek(seekTo);
+        setCurrentTime(seekTo);
     };
 
     const handleNext = () => {
         if (currentIndex !== null && currentIndex < songsList.length - 1) {
             setCurrentSong(songsList[currentIndex + 1]);
             setCurrentIndex(currentIndex + 1);
+        } else {
+            // Reset if the playlist ends
+            setCurrentSong(null);
+            setCurrentIndex(null);
         }
     };
 
@@ -78,6 +87,7 @@ export default function SongCard() {
     };
 
     const startTimeUpdate = () => {
+        clearInterval(intervalRef.current); // Clear existing intervals
         intervalRef.current = setInterval(() => {
             if (soundRef.current) {
                 setCurrentTime(soundRef.current.seek());
@@ -88,7 +98,7 @@ export default function SongCard() {
     const formatTime = (time) => {
         const minutes = Math.floor(time / 60);
         const seconds = Math.floor(time % 60);
-        return `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
+        return `${minutes}:${seconds < 10 ? "0" : ""}${seconds}`;
     };
 
     return (
@@ -115,7 +125,6 @@ export default function SongCard() {
                                 <p className="text-sm text-gray-400 text-center">
                                     {currentSong.album}
                                 </p>
-
                                 {/* Timeline */}
                                 <div className="mt-4">
                                     <div className="flex items-center justify-center gap-6">
@@ -164,8 +173,8 @@ export default function SongCard() {
                 </div>
             </div>
 
-            {/* Mobile Version */}
-            <div className="block lg:hidden fixed bottom-0 left-0 right-0 bg-[#6B0000] z-50">
+            
+            <div className=" lg:hidden fixed bottom-0 left-0 right-0 bg-[#6B0000] z-50">
                 {currentSong ? (
                     <div className="flex items-center p-4 space-x-4">
                         <img
@@ -203,6 +212,7 @@ export default function SongCard() {
                         </div>
                     </div>
                 ) : (
+
                     <p className="text-gray-400 text-center p-4">Select a song to play</p>
                 )}
             </div>

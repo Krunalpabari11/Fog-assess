@@ -11,7 +11,7 @@ export default function DragComponent() {
   ];
 
   const [playlist, setPlaylist] = useState(songs);
-  let { currentSong, setCurrentSong, currentIndex, setCurrentIndex } = useContext(PlayListContext);
+  const { currentSong, setCurrentSong, currentIndex, setCurrentIndex } = useContext(PlayListContext);
 
   const onDragEnd = (result) => {
     if (!result.destination) return;
@@ -29,7 +29,7 @@ export default function DragComponent() {
   };
 
   return (
-    <div className="pr-8 pl-6">
+    <div className="container mx-auto">
       <div className="flex justify-between items-center mb-4">
         <h2 className="text-2xl font-bold pl-4">Popular</h2>
         <button className="hover:underline pr-4">See All</button>
@@ -38,64 +38,64 @@ export default function DragComponent() {
       <DragDropContext onDragEnd={onDragEnd}>
         <Droppable droppableId="playlist">
           {(provided) => (
-            <div 
+            <div
               {...provided.droppableProps}
               ref={provided.innerRef}
               className="w-full"
             >
-              {/* For larger screens: use table layout */}
+              {/* For larger screens */}
               <div className="hidden lg:block">
-                <table className="table-auto w-full">
-                  <thead>
-                    <tr className="text-left font-semibold sticky top-0 text-white ">
-                      <th className="py-2 px-4">#</th>
-                      <th className="py-2 px-4"> </th>
-                      <th className="py-2 px-4">Title</th>
-                      <th className="py-2 px-4">Playing</th>
-                      <th className="py-2 px-4">Time</th>
-                      <th className="py-2 px-4 text-right">Album</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {playlist.map((song, index) => (
-                      <Draggable key={song.id} draggableId={song.id} index={index}>
-                        {(provided, snapshot) => (
-                          <tr
-                            ref={provided.innerRef}
-                            {...provided.draggableProps}
-                            {...provided.dragHandleProps}
-                            onClick={() => songHandler(song)}
-                            className={`
-                              hover:border-l-4 border-[#CA0000]
-                              transition-colors 
-                              ${currentSong?.id === song.id ? 'bg-[#520000] border-l-4 border-[#CA0000]' : ''}
-                              ${snapshot.isDragging ? 'bg-[#520000] shadow-lg' : 'hover:bg-[#520000]'}
-                            `}
-                          >
-                            <td className="py-2 px-4">
-                              {currentSong?.id === song.id ? (
-                                <img src="/music.png" className="w-5 h-5" alt="Playing Icon" />
-                              ) : (
-                                index + 1
-                              )}
-                            </td>
-                            <td className="py-2 px-4">
-                              <img src={song.img} alt={song.title} className="w-10 h-10 rounded" />
-                            </td>
-                            <td className="py-2 px-4">{song.title}</td>
-                            <td className="py-2 px-4">{song.playing}</td>
-                            <td className="py-2 px-4">{song.duration}</td>
-                            <td className="py-2 px-4 text-right">{song.album}</td>
-                          </tr>
-                        )}
-                      </Draggable>
-                    ))}
-                    {provided.placeholder}
-                  </tbody>
-                </table>
+                <div className="w-full">
+                  {/* Table Header */}
+                  <div className="grid grid-cols-6 text-left font-semibold sticky top-0 text-white py-2 px-4">
+                    <div>#</div>
+                    <div></div>
+                    <div>Title</div>
+                    <div>Playing</div>
+                    <div>Time</div>
+                    <div className="text-right">Album</div>
+                  </div>
+
+                  {/* Table Body */}
+                  {playlist.map((song, index) => (
+                    <Draggable key={song.id} draggableId={song.id} index={index}>
+                      {(provided, snapshot) => (
+                        <div
+                          ref={provided.innerRef}
+                          {...provided.draggableProps}
+                          {...provided.dragHandleProps}
+                          onClick={() => songHandler(song)}
+                          className={`
+                            grid grid-cols-6 items-center
+                            hover:border-l-4 border-[#CA0000]
+                            transition-colors cursor-pointer
+                            ${currentSong?.id === song.id ? 'bg-[#520000] border-l-4 border-[#CA0000]' : ''}
+                            ${snapshot.isDragging ? 'bg-[#520000] shadow-lg' : 'hover:bg-[#520000]'}
+                          `}
+                        >
+                          <div className="py-2 px-4">
+                            {currentSong?.id === song.id ? (
+                              <img src="/music.png" className="w-5 h-5" alt="Playing Icon" />
+                            ) : (
+                              index + 1
+                            )}
+                          </div>
+                          <div className="py-2 px-4">
+                            <img src={song.img} alt={song.title} className="w-10 h-10 rounded" />
+                          </div>
+                          <div className="py-2 px-4">{song.title}</div>
+                          <div className="py-2 px-4">{song.playing}</div>
+                          <div className="py-2 px-4">{song.duration}</div>
+                          <div className="py-2 px-4 text-right">{song.album}</div>
+                        </div>
+                      )}
+                    </Draggable>
+                  ))}
+                  {provided.placeholder}
+                </div>
               </div>
 
-              {/* For mobile screens: use a card-like layout */}
+              {/* Mobile view */}
               <div className="lg:hidden">
                 {playlist.map((song, index) => (
                   <Draggable key={song.id} draggableId={song.id} index={index}>

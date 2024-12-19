@@ -17,31 +17,23 @@ const App = () => {
   const [playlist, setPlaylist] = useState(songs);
   const [currentSong, setCurrentSong] = useState(null);
 
-  const onDragEnd = (result) => {
-    if (!result.destination) return;
-    const reordered = Array.from(playlist);
-    const [moved] = reordered.splice(result.source.index, 1);
-    reordered.splice(result.destination.index, 0, moved);
-    setPlaylist(reordered);
-  };
 
   return (
     <div className="flex h-screen bg-gradient-to-b from-[#4C0000] to-[#0A0A0A] text-white font-poppins overflow-hidden">
-      
-      <div className=" lg:block lg:w-1/5 w-1/10 h-screen">
+      {/* Sidebar - Fixed */}
+      <div className=" lg:block w-1/5 h-screen">
         <Sidebar />
       </div>
 
-      
-      <div className="flex-1 flex flex-col h-screen">
+      {/* Main Content - Scrollable */}
+      <div className=" flex flex-col h-screen">
         {/* Fixed Navbar */}
         <div className="w-full px-4 py-2">
           <Navbar />
         </div>
 
         {/* Scrollable Content */}
-        <div className="flex-1 overflow-y-auto " style={{scrollbarWidth:'none'}} >
-          {/* Container for scrollable content */}
+        <div className="flex-1 overflow-y-auto hide-scrollbar" style={{scrollbarWidth:'none'}}>
           <div className="px-4 space-y-4">
             {/* Wallpaper Image */}
             <div className="container mx-auto">
@@ -54,23 +46,21 @@ const App = () => {
 
             {/* Drag Component */}
             <div className="max-w-6xl mx-auto pb-20 lg:pb-0">
-              <DragComponent />
+              <DragComponent 
+              
+              />
             </div>
           </div>
         </div>
       </div>
 
       {/* Song Card - Fixed */}
-      <div className="hidden lg:block w-1/5 h-screen">
-        <div className="h-full bg-gradient-to-b from-[#00000000] to-[#0F0F0F99]">
-          <SongCard />
+        <div className="h-full w-1/5 bg-gradient-to-b from-[#00000000] to-[#0F0F0F99]">
+          <SongCard  />
         </div>
-      </div>
 
-      {/* Mobile Song Card */}
-      <div className="lg:hidden fixed bottom-0 left-0 right-0">
-        <SongCard />
-      </div>
+     
+     
     </div>
   );
 };
