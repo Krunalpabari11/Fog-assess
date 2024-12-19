@@ -11,7 +11,7 @@ export default function DragComponent() {
   ];
 
   const [playlist, setPlaylist] = useState(songs);
-  const { currentSong, setCurrentSong, currentIndex, setCurrentIndex } = useContext(PlayListContext);
+  let { currentSong, setCurrentSong, currentIndex, setCurrentIndex } = useContext(PlayListContext);
 
   const onDragEnd = (result) => {
     if (!result.destination) return;
@@ -29,7 +29,7 @@ export default function DragComponent() {
   };
 
   return (
-    <div className="container mx-auto">
+    <div className="pr-8 pl-6">
       <div className="flex justify-between items-center mb-4">
         <h2 className="text-2xl font-bold pl-4">Popular</h2>
         <button className="hover:underline pr-4">See All</button>
@@ -38,65 +38,24 @@ export default function DragComponent() {
       <DragDropContext onDragEnd={onDragEnd}>
         <Droppable droppableId="playlist">
           {(provided) => (
-            <div
+            <div 
               {...provided.droppableProps}
               ref={provided.innerRef}
               className="w-full"
             >
               {/* For larger screens */}
-              <div className="hidden lg:block">
-                <div className="w-full">
-                  {/* Table Header */}
-                  <div className="grid grid-cols-6 text-left font-semibold sticky top-0 text-white py-2 px-4">
-                    <div>#</div>
-                    <div></div>
-                    <div>Title</div>
-                    <div>Playing</div>
-                    <div>Time</div>
-                    <div className="text-right">Album</div>
-                  </div>
-
-                  {/* Table Body */}
-                  {playlist.map((song, index) => (
-                    <Draggable key={song.id} draggableId={song.id} index={index}>
-                      {(provided, snapshot) => (
-                        <div
-                          ref={provided.innerRef}
-                          {...provided.draggableProps}
-                          {...provided.dragHandleProps}
-                          onClick={() => songHandler(song)}
-                          className={`
-                            grid grid-cols-6 items-center
-                            hover:border-l-4 border-[#CA0000]
-                            transition-colors cursor-pointer
-                            ${currentSong?.id === song.id ? 'bg-[#520000] border-l-4 border-[#CA0000]' : ''}
-                            ${snapshot.isDragging ? 'bg-[#520000] shadow-lg' : 'hover:bg-[#520000]'}
-                          `}
-                        >
-                          <div className="py-2 px-4">
-                            {currentSong?.id === song.id ? (
-                              <img src="/music.png" className="w-5 h-5" alt="Playing Icon" />
-                            ) : (
-                              index + 1
-                            )}
-                          </div>
-                          <div className="py-2 px-4">
-                            <img src={song.img} alt={song.title} className="w-10 h-10 rounded" />
-                          </div>
-                          <div className="py-2 px-4">{song.title}</div>
-                          <div className="py-2 px-4">{song.playing}</div>
-                          <div className="py-2 px-4">{song.duration}</div>
-                          <div className="py-2 px-4 text-right">{song.album}</div>
-                        </div>
-                      )}
-                    </Draggable>
-                  ))}
-                  {provided.placeholder}
+              <div className=" lg:block">
+                {/* Table Header */}
+                <div className="grid grid-cols-3 lg:grid-cols-6  text-left font-semibold sticky top-0 text-white py-2 px-4">
+                  <div>#</div>
+                  <div></div>
+                  <div>Title</div>
+                  <div className='hidden lg:block' >Playing</div>
+                  <div className='hidden lg:block'>Time</div>
+                  <div className='hidden lg:block text-right' >Album</div>
                 </div>
-              </div>
 
-              {/* Mobile view */}
-              <div className="lg:hidden">
+                {/* Table Body */}
                 {playlist.map((song, index) => (
                   <Draggable key={song.id} draggableId={song.id} index={index}>
                     {(provided, snapshot) => (
@@ -106,32 +65,34 @@ export default function DragComponent() {
                         {...provided.dragHandleProps}
                         onClick={() => songHandler(song)}
                         className={`
-                          flex items-center py-4 px-2 my-2 bg-[#2C0000] rounded-md 
-                          ${currentSong?.id === song.id ? 'bg-[#520000]' : 'hover:bg-[#520000]'}
-                          ${snapshot.isDragging ? 'shadow-lg' : ''}
+                          grid grid-cols-3 lg:grid-cols-6 items-center
+                          hover:border-l-4 border-[#CA0000]
+                          transition-colors cursor-pointer
+                          ${currentSong?.id === song.id ? 'bg-[#520000] border-l-4 border-[#CA0000]' : ''}
+                          ${snapshot.isDragging ? 'bg-[#520000] shadow-lg' : 'hover:bg-[#520000]'}
                         `}
                       >
-                        <div className="w-1/5">
+                        <div className="py-2 px-4">
                           {currentSong?.id === song.id ? (
                             <img src="/music.png" className="w-5 h-5" alt="Playing Icon" />
                           ) : (
                             index + 1
                           )}
                         </div>
-                        <div className="w-1/5">
+                        <div className="py-2 px-4">
                           <img src={song.img} alt={song.title} className="w-10 h-10 rounded" />
                         </div>
-                        <div className="w-3/5 pl-2">
-                          <div className="text-white font-semibold">{song.title}</div>
-                          <div className="text-gray-400">{song.playing}</div>
-                          <div className="text-sm text-gray-500">{song.duration}</div>
-                        </div>
+                        <div className="py-2 px-4">{song.title}</div>
+                        <div className=" hidden lg:block py-2 px-4">{song.playing}</div>
+                        <div className=" hidden lg:block py-2 px-4">{song.duration}</div>
+                        <div className=" hidden lg:block py-2 px-4 text-right">{song.album}</div>
                       </div>
                     )}
                   </Draggable>
                 ))}
-                {provided.placeholder}
               </div>
+
+              {provided.placeholder}
             </div>
           )}
         </Droppable>
